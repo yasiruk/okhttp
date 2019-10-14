@@ -1940,8 +1940,10 @@ public final class CacheTest {
     Response response3 = get(server.url("/a"));
     assertThat(response3.body().string()).isEqualTo("A");
     assertThat(response3.header("Allow")).isEqualTo("GET, HEAD");
+    // Since the received timestamp for response3 is the original timestamp from response2,
+    // we expect the offset to be greater than sleep time(> 500ms).
     assertThat((double) (response3.receivedResponseAtMillis() - t2)).isCloseTo(
-        (double) 0, offset(250.0));
+        (double) 0, offset(750.0));
 
     assertThat(server.getRequestCount()).isEqualTo(2);
   }
